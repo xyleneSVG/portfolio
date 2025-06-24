@@ -60,8 +60,8 @@ export default function Projects({ projects = [] }: ProjectsProps): JSX.Element 
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-100 duration-300"></div>
+                <div className="absolute bottom-4 left-4 right-4 opacity-100 duration-300">
                   <div className="flex space-x-2">
                     {project.hasSourceCode && project.sourceCodeLink && (
                       <a

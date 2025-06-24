@@ -3,7 +3,7 @@ import { put } from '@vercel/blob'
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  upload: false,
+  upload: true,
   fields: [
     {
       name: 'url',

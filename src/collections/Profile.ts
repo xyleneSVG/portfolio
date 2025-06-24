@@ -24,7 +24,7 @@ export const Profile: CollectionConfig = {
                 name: 'imageUser',
                 type: 'upload',
                 relationTo: 'media',
-                required: false,
+                required: true,
                 label: 'Profile Image',
                 admin: {
                 description: 'Upload foto profil di sini',

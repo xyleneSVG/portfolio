@@ -50,6 +50,7 @@ export default function Portfolio() {
         setFetching(false)
       }
     }
+    console.log("test: ",profileImageUrl)
     fetchDataProfile()
   }, [])
 
@@ -64,7 +65,7 @@ export default function Portfolio() {
           <BackgroundDecorations />
           <Navigation />
           <main className="relative z-10">
-            <Hero name={name} division={division} greeting={greeting} />
+            <Hero name={profileImageUrl} division={division} greeting={greeting} />
             <About status={currentStatus} institution={institution} profileImageUrl={profileImageUrl} />
             <Projects />
             <Certificates />

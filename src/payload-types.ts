@@ -165,7 +165,7 @@ export interface Profile {
     /**
      * Upload foto profil di sini
      */
-    imageUser?: (number | null) | Media;
+    imageUser: number | Media;
     /**
      * Divisi pengguna, misalnya: Frontend Developer, Backend Developer, dsb.
      */

@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-
+ 
 export const Profile: CollectionConfig = {
   slug: 'profile',
   admin: {

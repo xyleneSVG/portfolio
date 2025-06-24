@@ -4,6 +4,7 @@ export const Profile: CollectionConfig = {
   slug: 'profile',
   admin: {
     defaultColumns: ['profileUser.nameUser', 'profileUser.divisionUser'],
+    group: 'Profile User',
   },
   fields: [
     {

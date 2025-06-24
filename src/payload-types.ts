@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     profile: Profile;
+    project: Project;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     profile: ProfileSelect<false> | ProfileSelect<true>;
+    project: ProjectSelect<false> | ProjectSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -206,6 +208,46 @@ export interface Profile {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project".
+ */
+export interface Project {
+  id: number;
+  /**
+   * Judul dari proyek
+   */
+  projectTitle: string;
+  /**
+   * Deskripsi singkat mengenai proyek ini
+   */
+  projectDescription: string;
+  /**
+   * Upload gambar thumbnail untuk proyek
+   */
+  thumbnail: number | Media;
+  hasSourceCode?: boolean | null;
+  /**
+   * Link ke source code (GitHub atau lainnya)
+   */
+  sourceCodeLink?: string | null;
+  hasLiveDemo?: boolean | null;
+  /**
+   * Link ke live demo dari proyek
+   */
+  liveDemoLink?: string | null;
+  /**
+   * Tambahkan satu atau lebih tag untuk proyek ini
+   */
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -222,6 +264,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'profile';
         value: number | Profile;
+      } | null)
+    | ({
+        relationTo: 'project';
+        value: number | Project;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -320,6 +366,27 @@ export interface ProfileSelect<T extends boolean = true> {
         github?: T;
         linkedin?: T;
         email?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project_select".
+ */
+export interface ProjectSelect<T extends boolean = true> {
+  projectTitle?: T;
+  projectDescription?: T;
+  thumbnail?: T;
+  hasSourceCode?: T;
+  sourceCodeLink?: T;
+  hasLiveDemo?: T;
+  liveDemoLink?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, JSX } from "react"
 import { ExternalLink, Github } from "lucide-react"
 
-export default function Projects() {
+import type { ProjectsProps } from "../_types/project"
+
+export default function Projects({ projects = [] }: ProjectsProps): JSX.Element {
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLElement>(null)
 
@@ -14,7 +16,7 @@ export default function Projects() {
           setIsVisible(true)
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     )
 
     if (ref.current) {
@@ -23,45 +25,6 @@ export default function Projects() {
 
     return () => observer.disconnect()
   }, [])
-
-  const projects = [
-    {
-      title: "E-Commerce Platform",
-      description:
-        "A full-stack e-commerce solution with React, Node.js, and MongoDB. Features include user authentication, payment integration, and admin dashboard.",
-      image: "/placeholder.svg?height=300&width=500",
-      tech: ["React", "Node.js", "MongoDB", "Stripe"],
-      github: "#",
-      live: "#",
-    },
-    {
-      title: "Task Management App",
-      description:
-        "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
-      image: "/placeholder.svg?height=300&width=500",
-      tech: ["Next.js", "TypeScript", "Prisma", "Socket.io"],
-      github: "#",
-      live: "#",
-    },
-    {
-      title: "Weather Dashboard",
-      description:
-        "A responsive weather dashboard with location-based forecasts, interactive maps, and detailed weather analytics.",
-      image: "/placeholder.svg?height=300&width=500",
-      tech: ["Vue.js", "Chart.js", "OpenWeather API", "Tailwind"],
-      github: "#",
-      live: "#",
-    },
-    {
-      title: "Social Media Analytics",
-      description:
-        "A comprehensive analytics platform for social media management with data visualization and automated reporting.",
-      image: "/placeholder.svg?height=300&width=500",
-      tech: ["React", "D3.js", "Python", "PostgreSQL"],
-      github: "#",
-      live: "#",
-    },
-  ]
 
   return (
     <section id="projects" ref={ref} className="py-20 px-4">
@@ -82,57 +45,64 @@ export default function Projects() {
           </p>
         </div>
 
-        {/* Project Grid - Show only first 3 */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.slice(0, 3).map((project, index) => (
             <div
-              key={index}
+              key={project.id || index}
               className={`group bg-gradient-to-br from-gray-900/50 to-black/50 rounded-xl border border-orange-500/20 overflow-hidden hover:border-orange-500/40 transition-all duration-500 hover:scale-105 backdrop-blur-sm ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
-              style={{ transitionDelay: `${500 + index * 100}ms` }}
+              style={{ transitionDelay: `100ms` }}
             >
               <div className="relative h-48 overflow-hidden">
                 <img
-                  src={project.image || "/placeholder.svg"}
+                  src={`https://vs7tmjfafevxnjqh.public.blob.vercel-storage.com/${project.thumbnail?.filename || "/placeholder.svg"}`}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="flex space-x-2">
-                    <a
-                      href={project.github}
-                      className="p-2 bg-black/80 rounded-full text-orange-500 hover:bg-orange-500 hover:text-black transition-all duration-300"
-                    >
-                      <Github className="w-4 h-4" />
-                    </a>
-                    <a
-                      href={project.live}
-                      className="p-2 bg-black/80 rounded-full text-orange-500 hover:bg-orange-500 hover:text-black transition-all duration-300"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+                    {project.hasSourceCode && project.sourceCodeLink && (
+                      <a
+                        href={project.sourceCodeLink}
+                        className="p-2 bg-black/80 rounded-full text-orange-500 hover:bg-orange-500 hover:text-black transition-all duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github className="w-4 h-4" />
+                      </a>
+                    )}
+                    {project.hasLiveDemo && project.liveDemoLink && (
+                      <a
+                        href={project.liveDemoLink}
+                        className="p-2 bg-black/80 rounded-full text-orange-500 hover:bg-orange-500 hover:text-black transition-all duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
 
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-2 text-white group-hover:text-orange-500 transition-colors duration-300">
-                  {project.title}
+                  {project.projectTitle}
                 </h3>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">{project.description}</p>
+                <p className="text-gray-400 text-sm mb-4 line-clamp-3">{project.projectDescription}</p>
                 <div className="flex flex-wrap gap-1">
-                  {project.tech.slice(0, 3).map((tech, techIndex) => (
+                  {project.tags?.slice(0, 3).map((tagObj, tagIndex) => (
                     <span
-                      key={techIndex}
+                      key={tagObj.id || tagIndex}
                       className="px-2 py-1 text-xs bg-orange-500/20 text-orange-300 rounded border border-orange-500/30"
                     >
-                      {tech}
+                      {tagObj.tag}
                     </span>
                   ))}
-                  {project.tech.length > 3 && (
-                    <span className="px-2 py-1 text-xs text-gray-400">+{project.tech.length - 3}</span>
+                  {(project.tags?.length ?? 0) > 3 && (
+                    <span className="px-2 py-1 text-xs text-gray-400">+{(project.tags?.length ?? 0) - 3}</span>
                   )}
                 </div>
               </div>
@@ -140,9 +110,8 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* View More Button */}
         <div
-          className={`text-center mt-12 transition-all duration-1000 delay-1000 ${
+          className={`text-center mt-12 transition-all duration-1000 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >

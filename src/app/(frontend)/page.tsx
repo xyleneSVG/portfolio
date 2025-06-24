@@ -1,59 +1,78 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
+'use client'
 
-import config from '@/payload.config'
-import './styles.css'
+// component
+import Hero from "./_components/hero"
+import About from "./_components/about"
+import Projects from "./_components/projects"
+import Certificates from "./_components/certificates"
+import TechStack from "./_components/tect-stack"
+import Contact from "./_components/contact"
+import BackgroundDecorations from "./_components/background-decorations"
+import Navigation from "./_components/navigation"
 
-export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+// functions server
+import { getUserData } from "./_functions/getUserData"
 
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+// modules
+import { useEffect, useState } from "react"
+
+export default function Portfolio() {
+  const [fetching, setFetching] = useState(true)
+  const [name, setName] = useState("")
+  const [division, setDivision] = useState("")
+  const [greeting, setGreeting] = useState("")
+  const [currentStatus, setCurrentStatus] = useState("")
+  const [institution, setInstitution] = useState("")
+  const [profileImageUrl, setProfileImageUrl] = useState("")
+
+  useEffect(() => {
+    const fetchDataProfile = async () => {
+      try {
+        setFetching(true)
+        const profileData = await getUserData()
+        setName(profileData.profileUser.nameUser)
+        setDivision(profileData.profileUser.divisionUser)
+        setGreeting(profileData.profileUser.greetingUser)
+        setCurrentStatus(profileData.profileUser.currentStatus)
+        setProfileImageUrl(
+          typeof profileData.profileUser.imageUser === "object" && profileData.profileUser.imageUser !== null
+            ? profileData.profileUser.imageUser.url ?? ""
+              : ""
+        )
+        if (profileData.profileUser.currentStatus === "working") {
+          setInstitution(profileData.profileUser.workingInstitution ?? "")
+        } else if (profileData.profileUser.currentStatus === "learning") {
+          setInstitution(profileData.profileUser.learningInstitution ?? "")
+        }
+        console.log(profileData)
+      } finally {
+        console.log(currentStatus)
+        setFetching(false)
+      }
+    }
+    fetchDataProfile()
+  }, [])
 
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
+    <>
+      {fetching ? (
+        <div className="flex items-center justify-center min-h-screen bg-black">
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+      ) : (
+        <div className="min-h-screen bg-black text-white relative overflow-hidden">
+          <BackgroundDecorations />
+          <Navigation />
+          <main className="relative z-10">
+            <Hero name={name} division={division} greeting={greeting} />
+            <About status={currentStatus} institution={institution} profileImageUrl={profileImageUrl} />
+            <Projects />
+            <Certificates />
+            <TechStack />
+            <Contact />
+          </main>
+        </div>
+      )}
+    </>
   )
 }

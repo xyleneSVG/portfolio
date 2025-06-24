@@ -23,36 +23,43 @@ export default function Portfolio() {
   const [greeting, setGreeting] = useState("")
   const [currentStatus, setCurrentStatus] = useState("")
   const [institution, setInstitution] = useState("")
-  const [profileImageUrl, setProfileImageUrl] = useState("")
+  const [imageProfileUrl, setImageProfileUrl] = useState("")
+
+  const domainBlob = "https://vs7tmjfafevxnjqh.public.blob.vercel-storage.com/"
 
   useEffect(() => {
     const fetchDataProfile = async () => {
       try {
-        setFetching(true)
-        const profileData = await getUserData()
-        setName(profileData.profileUser.nameUser)
-        setDivision(profileData.profileUser.divisionUser)
-        setGreeting(profileData.profileUser.greetingUser)
-        setCurrentStatus(profileData.profileUser.currentStatus)
-        setProfileImageUrl(
+        setFetching(true);
+        const profileData = await getUserData();
+        setName(profileData.profileUser.nameUser);
+        setDivision(profileData.profileUser.divisionUser);
+        setGreeting(profileData.profileUser.greetingUser);
+        setCurrentStatus(profileData.profileUser.currentStatus);
+
+        const filename = 
           typeof profileData.profileUser.imageUser === "object" && profileData.profileUser.imageUser !== null
-            ? profileData.profileUser.imageUser.url ?? ""
-              : ""
-        )
+            ? profileData.profileUser.imageUser.filename ?? ""
+            : "";
+
         if (profileData.profileUser.currentStatus === "working") {
-          setInstitution(profileData.profileUser.workingInstitution ?? "")
+          setInstitution(profileData.profileUser.workingInstitution ?? "");
         } else if (profileData.profileUser.currentStatus === "learning") {
-          setInstitution(profileData.profileUser.learningInstitution ?? "")
+          setInstitution(profileData.profileUser.learningInstitution ?? "");
         }
-        console.log(profileData)
+
+        if (filename) {
+          setImageProfileUrl(domainBlob + filename);
+        }
+
+        console.log("Fetched profile data: ", profileData);
       } finally {
-        console.log(currentStatus)
-        setFetching(false)
+        setFetching(false);
       }
-    }
-    console.log("test: ",profileImageUrl)
-    fetchDataProfile()
-  }, [])
+    };
+
+    fetchDataProfile();
+  }, []);
 
   return (
     <>
@@ -65,8 +72,8 @@ export default function Portfolio() {
           <BackgroundDecorations />
           <Navigation />
           <main className="relative z-10">
-            <Hero name={profileImageUrl} division={division} greeting={greeting} />
-            <About status={currentStatus} institution={institution} profileImageUrl={profileImageUrl} />
+            <Hero name={name} division={division} greeting={greeting} />
+            <About status={currentStatus} institution={institution} profileImageUrl={imageProfileUrl} />
             <Projects />
             <Certificates />
             <TechStack />

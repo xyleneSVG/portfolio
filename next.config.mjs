@@ -3,8 +3,13 @@ import { withPayload } from '@payloadcms/next/withPayload'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "portfolio-dhavin.vercel.app",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'vs7tmjfafevxnjqh.public.blob.vercel-storage.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 }

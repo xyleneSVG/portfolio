@@ -11,6 +11,11 @@ export type Project = {
   hasLiveDemo?: boolean
   liveDemoLink?: string
   tags?: { id?: string; tag: string }[]
+  category?: {
+    id?: string
+    name?: string
+    description?: string
+  }
 }
 
 export interface ProjectsProps {

@@ -49,7 +49,7 @@ export default function Projects({ projects = [] }: ProjectsProps): JSX.Element 
           {projects.slice(0, 3).map((project, index) => (
             <div
               key={project.id || index}
-              className={`group bg-gradient-to-br from-gray-900/50 to-black/50 rounded-xl border border-orange-500/20 overflow-hidden hover:border-orange-500/40 transition-all duration-500 hover:scale-105 backdrop-blur-sm ${
+              className={`group bg-gradient-to-br from-gray-900/50 to-black/50 rounded-xl border border-orange-500/20 overflow-hidden hover:border-orange-500/40 transition-all duration-500 hover:scale-95 backdrop-blur-sm ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `100ms` }}
@@ -58,7 +58,7 @@ export default function Projects({ projects = [] }: ProjectsProps): JSX.Element 
                 <img
                   src={`https://vs7tmjfafevxnjqh.public.blob.vercel-storage.com/${project.thumbnail?.filename || "/placeholder.svg"}`}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-100 duration-300"></div>
                 <div className="absolute bottom-4 left-4 right-4 opacity-100 duration-300">
@@ -117,7 +117,7 @@ export default function Projects({ projects = [] }: ProjectsProps): JSX.Element 
         >
           <a
             href="/projects"
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-black font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25"
+            className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-black font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 hover:scale-95 hover:shadow-lg hover:shadow-orange-500/25"
           >
             <span>View All Projects</span>
             <ExternalLink className="w-5 h-5" />

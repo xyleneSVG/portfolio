@@ -14,14 +14,21 @@ export default function BackgroundDecorations() {
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
 
-  // Only generate particles once on mount
-  const particles = useMemo(() => {
-    return [...Array(20)].map(() => ({
+  const [particles, setParticles] = useState<{ 
+    left: string; 
+    top: string; 
+    animationDelay: string; 
+    animationDuration: string 
+  }[]>([])
+
+  useEffect(() => {
+    const generated = [...Array(20)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
       animationDelay: `${Math.random() * 10}s`,
       animationDuration: `${10 + Math.random() * 20}s`,
     }))
+    setParticles(generated)
   }, [])
 
   return (

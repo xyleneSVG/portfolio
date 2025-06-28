@@ -65,6 +65,16 @@ export const Project: CollectionConfig = {
       },
     },
     {
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'categoryProject',
+      required: true,
+      label: 'Project Category',
+      admin: {
+        description: 'Pilih kategori proyek ini',
+      },
+    },
+    {
       name: 'tags',
       type: 'array',
       label: 'Tags',

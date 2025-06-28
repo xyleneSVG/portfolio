@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     profile: Profile;
     project: Project;
+    categoryProject: CategoryProject;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +82,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     profile: ProfileSelect<false> | ProfileSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
+    categoryProject: CategoryProjectSelect<false> | CategoryProjectSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -235,6 +237,10 @@ export interface Project {
    */
   liveDemoLink?: string | null;
   /**
+   * Pilih kategori proyek ini
+   */
+  category: number | CategoryProject;
+  /**
    * Tambahkan satu atau lebih tag untuk proyek ini
    */
   tags?:
@@ -243,6 +249,23 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categoryProject".
+ */
+export interface CategoryProject {
+  id: number;
+  /**
+   * Nama kategori proyek (misal: Frontend, Fullstack, Mobile)
+   */
+  name: string;
+  /**
+   * Deskripsi tambahan untuk kategori ini (optional)
+   */
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -268,6 +291,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'project';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'categoryProject';
+        value: number | CategoryProject;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -382,12 +409,23 @@ export interface ProjectSelect<T extends boolean = true> {
   sourceCodeLink?: T;
   hasLiveDemo?: T;
   liveDemoLink?: T;
+  category?: T;
   tags?:
     | T
     | {
         tag?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categoryProject_select".
+ */
+export interface CategoryProjectSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }

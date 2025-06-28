@@ -13,6 +13,9 @@ export function mapPayloadProjectToFrontend(p: PayloadProject): Project {
     thumbnail: typeof p.thumbnail === "object" && p.thumbnail !== null
       ? { filename: (p.thumbnail as any).filename }
       : undefined,
+    category: (typeof p.category === "object" && p.category !== null)
+      ? { id: String(p.category.id), name: p.category.name, description: p.category.description ?? undefined }
+      : undefined,
     tags: p.tags?.map(tag => ({
       id: String(tag.id),
       tag: tag.tag
